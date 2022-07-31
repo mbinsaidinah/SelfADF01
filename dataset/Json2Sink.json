@@ -1,0 +1,74 @@
+{
+	"name": "Json2Sink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorageGeneral",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "tables/new",
+				"container": "data"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"ts": {
+					"type": "integer"
+				},
+				"userId": {
+					"type": "string"
+				},
+				"sessionId": {
+					"type": "integer"
+				},
+				"page": {
+					"type": "string"
+				},
+				"auth": {
+					"type": "string"
+				},
+				"method": {
+					"type": "string"
+				},
+				"status": {
+					"type": "integer"
+				},
+				"level": {
+					"type": "string"
+				},
+				"itemInSession": {
+					"type": "integer"
+				},
+				"location": {
+					"type": "string"
+				},
+				"lastName": {
+					"type": "string"
+				},
+				"firstName": {
+					"type": "string"
+				},
+				"registration": {
+					"type": "integer"
+				},
+				"gender": {
+					"type": "string"
+				},
+				"artist": {
+					"type": "string"
+				},
+				"song": {
+					"type": "string"
+				},
+				"length": {
+					"type": "number"
+				}
+			}
+		}
+	}
+}

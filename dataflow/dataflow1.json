@@ -12,7 +12,15 @@
 					"name": "source1"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Json2Sink",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "select2"
@@ -68,7 +76,32 @@
 				"     skipDuplicateMapOutputs: true) ~> select2",
 				"select2 aggregate(groupBy(gender,",
 				"          level),",
-				"     noOfaggre = count()) ~> aggregate1"
+				"     noOfaggre = count()) ~> aggregate1",
+				"aggregate1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ts as integer,",
+				"          userId as string,",
+				"          sessionId as integer,",
+				"          page as string,",
+				"          auth as string,",
+				"          method as string,",
+				"          status as integer,",
+				"          level as string,",
+				"          itemInSession as integer,",
+				"          location as string,",
+				"          lastName as string,",
+				"          firstName as string,",
+				"          registration as integer,",
+				"          gender as string,",
+				"          artist as string,",
+				"          song as string,",
+				"          length as double",
+				"     ),",
+				"     partitionFileNames:['output.json'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
 			]
 		}
 	}
