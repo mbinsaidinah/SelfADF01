@@ -1,0 +1,24 @@
+{
+	"name": "SelfHostedSQLDB",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LocalSQLServer",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"DBName": {
+					"value": "@dataset().DBName",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"DBName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

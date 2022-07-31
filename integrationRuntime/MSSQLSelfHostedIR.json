@@ -1,0 +1,7 @@
+{
+	"name": "MSSQLSelfHostedIR",
+	"properties": {
+		"type": "SelfHosted",
+		"description": "My local sql server"
+	}
+}

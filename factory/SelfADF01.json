@@ -1,0 +1,9 @@
+{
+	"name": "SelfADF01",
+	"location": "eastus2",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "10132acb-f510-41b5-95df-3be9aa0da8d3",
+		"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+	}
+}
