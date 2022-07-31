@@ -5,6 +5,9 @@
 		"factoryName": {
 			"value": "SelfADF01"
 		},
+		"AzureBlobStorageGeneral_connectionString": {
+			"value": ""
+		},
 		"AzureDatabricks1_accessToken": {
 			"value": ""
 		},

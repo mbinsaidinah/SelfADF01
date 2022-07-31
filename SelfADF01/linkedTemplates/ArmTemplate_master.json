@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "SelfADF01"
 		},
+		"AzureBlobStorageGeneral_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorageGeneral'"
+		},
 		"AzureDatabricks1_accessToken": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'AzureDatabricks1'"
@@ -45,6 +49,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"AzureBlobStorageGeneral_connectionString": {
+						"value": "[parameters('AzureBlobStorageGeneral_connectionString')]"
 					},
 					"AzureDatabricks1_accessToken": {
 						"value": "[parameters('AzureDatabricks1_accessToken')]"
