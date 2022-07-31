@@ -11,13 +11,13 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'AzureDatabricks1'"
 		},
-		"LocalSQLServer_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'LocalSQLServer'"
-		},
 		"SqlServer1_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SqlServer1'"
+		},
+		"LocalSQLServer_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LocalSQLServer'"
 		}
 	},
 	"variables": {
@@ -25,67 +25,18 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/AdventureworkLT')]",
+			"name": "[concat(parameters('factoryName'), '/wait_pipeline')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Lookup1 Azure SQL DB",
-						"type": "Lookup",
+						"name": "Wait1",
+						"type": "Wait",
 						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
 						"userProperties": [],
 						"typeProperties": {
-							"source": {
-								"type": "SqlServerSource",
-								"sqlReaderQuery": "Select * from Airport",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "Azure_SQLDB",
-								"type": "DatasetReference",
-								"parameters": {
-									"DBName": "AirlinePerformance-OLTP"
-								}
-							},
-							"firstRowOnly": false
-						}
-					},
-					{
-						"name": "Lookup2 Self Hosted SQL DB",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlServerSource",
-								"sqlReaderQuery": "select * from dbo.DimDate",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "SelfHostedSQLDB",
-								"type": "DatasetReference",
-								"parameters": {
-									"DBName": "AdventureWorksDW2019"
-								}
-							},
-							"firstRowOnly": false
+							"waitTimeInSeconds": 3
 						}
 					}
 				],
@@ -93,13 +44,63 @@
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
-				"annotations": [],
-				"lastPublishTime": "2022-07-30T08:47:19Z"
+				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Azure_SQLDB')]",
-				"[concat(variables('factoryId'), '/datasets/SelfHostedSQLDB')]"
-			]
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDatabricks1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-4831337339444541.1.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDatabricks1_accessToken')]"
+					},
+					"newClusterNodeType": "Standard_DS3_v2",
+					"newClusterNumOfWorker": "2",
+					"newClusterSparkEnvVars": {
+						"PYSPARK_PYTHON": "/databricks/python3/bin/python3"
+					},
+					"newClusterVersion": "10.4.x-scala2.12",
+					"newClusterInitScripts": [],
+					"clusterOption": "Fixed"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServer1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"parameters": {
+					"DBName": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('SqlServer1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/MSSQLSelfHostedIR')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"description": "My local sql server",
+				"typeProperties": {}
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Run_Notebook_pipeline')]",
@@ -158,30 +159,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureDatabricks1')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/wait_pipeline')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Wait1",
-						"type": "Wait",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"waitTimeInSeconds": 3
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Azure_SQLDB')]",
@@ -299,6 +276,30 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/LocalSQLServer')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"parameters": {
+					"DBName": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('LocalSQLServer_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "MSSQLSelfHostedIR",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/MSSQLSelfHostedIR')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SelfHostedSQLDB')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -328,82 +329,81 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureDatabricks1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"name": "[concat(parameters('factoryName'), '/AdventureworkLT')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"annotations": [],
-				"type": "AzureDatabricks",
-				"typeProperties": {
-					"domain": "https://adb-4831337339444541.1.azuredatabricks.net",
-					"accessToken": {
-						"type": "SecureString",
-						"value": "[parameters('AzureDatabricks1_accessToken')]"
+				"activities": [
+					{
+						"name": "Lookup1 Azure SQL DB",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": "Select * from Airport",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "Azure_SQLDB",
+								"type": "DatasetReference",
+								"parameters": {
+									"DBName": "AirlinePerformance-OLTP"
+								}
+							},
+							"firstRowOnly": false
+						}
 					},
-					"newClusterNodeType": "Standard_DS3_v2",
-					"newClusterNumOfWorker": "2",
-					"newClusterSparkEnvVars": {
-						"PYSPARK_PYTHON": "/databricks/python3/bin/python3"
-					},
-					"newClusterVersion": "10.4.x-scala2.12",
-					"newClusterInitScripts": [],
-					"clusterOption": "Fixed"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LocalSQLServer')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"parameters": {
-					"DBName": {
-						"type": "String"
+					{
+						"name": "Lookup2 Self Hosted SQL DB",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": "select * from dbo.DimDate",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SelfHostedSQLDB",
+								"type": "DatasetReference",
+								"parameters": {
+									"DBName": "AdventureWorksDW2019"
+								}
+							},
+							"firstRowOnly": false
+						}
 					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
 				},
 				"annotations": [],
-				"type": "SqlServer",
-				"typeProperties": {
-					"connectionString": "[parameters('LocalSQLServer_connectionString')]"
-				},
-				"connectVia": {
-					"referenceName": "MSSQLSelfHostedIR",
-					"type": "IntegrationRuntimeReference"
-				}
+				"lastPublishTime": "2022-07-30T08:47:19Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/MSSQLSelfHostedIR')]"
+				"[concat(variables('factoryId'), '/datasets/Azure_SQLDB')]",
+				"[concat(variables('factoryId'), '/datasets/SelfHostedSQLDB')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SqlServer1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"parameters": {
-					"DBName": {
-						"type": "String"
-					}
-				},
-				"annotations": [],
-				"type": "SqlServer",
-				"typeProperties": {
-					"connectionString": "[parameters('SqlServer1_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/MSSQLSelfHostedIR')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "SelfHosted",
-				"description": "My local sql server",
-				"typeProperties": {}
-			},
-			"dependsOn": []
 		}
 	]
 }

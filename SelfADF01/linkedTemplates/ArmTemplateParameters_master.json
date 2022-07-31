@@ -13,6 +13,12 @@
 		},
 		"SqlServer1_connectionString": {
 			"value": ""
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
 		}
 	}
 }
