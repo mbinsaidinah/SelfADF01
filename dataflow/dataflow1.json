@@ -1,0 +1,108 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Json1",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Json2Sink",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "select2"
+				},
+				{
+					"name": "aggregate1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          ts as integer,",
+				"          userId as string,",
+				"          sessionId as integer,",
+				"          page as string,",
+				"          auth as string,",
+				"          method as string,",
+				"          status as integer,",
+				"          level as string,",
+				"          itemInSession as integer,",
+				"          location as string,",
+				"          lastName as string,",
+				"          firstName as string,",
+				"          registration as integer,",
+				"          gender as string,",
+				"          artist as string,",
+				"          song as string,",
+				"          length as double",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> source1",
+				"source1 select(mapColumn(",
+				"          ts,",
+				"          userId,",
+				"          sessionId,",
+				"          page,",
+				"          auth,",
+				"          method,",
+				"          status,",
+				"          level,",
+				"          itemInSession,",
+				"          location,",
+				"          lastName,",
+				"          firstName,",
+				"          registration,",
+				"          gender,",
+				"          artist,",
+				"          song,",
+				"          length",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select2 aggregate(groupBy(gender,",
+				"          level),",
+				"     noOfaggre = count()) ~> aggregate1",
+				"aggregate1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ts as integer,",
+				"          userId as string,",
+				"          sessionId as integer,",
+				"          page as string,",
+				"          auth as string,",
+				"          method as string,",
+				"          status as integer,",
+				"          level as string,",
+				"          itemInSession as integer,",
+				"          location as string,",
+				"          lastName as string,",
+				"          firstName as string,",
+				"          registration as integer,",
+				"          gender as string,",
+				"          artist as string,",
+				"          song as string,",
+				"          length as double",
+				"     ),",
+				"     partitionFileNames:['output.json'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
+			]
+		}
+	}
+}
