@@ -1,0 +1,25 @@
+{
+	"name": "DataFlowtrigger1",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "DataFlowpipeline",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 15,
+				"startTime": "2022-07-31T08:30:00Z",
+				"endTime": "2022-07-31T00:30:00Z",
+				"timeZone": "UTC"
+			}
+		}
+	}
+}
