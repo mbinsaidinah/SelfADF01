@@ -1,0 +1,29 @@
+{
+	"name": "BinaryDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorageGeneral",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"directory": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "L200 Module tryout"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": {
+					"value": "@dataset().directory",
+					"type": "Expression"
+				},
+				"container": "data"
+			}
+		}
+	}
+}
