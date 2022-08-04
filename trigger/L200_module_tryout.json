@@ -1,0 +1,24 @@
+{
+	"name": "L200_module_tryout",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "sqltoblob",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 15,
+				"startTime": "2022-08-04T03:14:00Z",
+				"timeZone": "UTC"
+			}
+		}
+	}
+}
