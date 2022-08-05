@@ -1,0 +1,37 @@
+{
+	"name": "SourceBlobTxt",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorageGeneral",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"container": {
+				"type": "string",
+				"defaultValue": "@pipeline().parameters.sourceBlobContainer"
+			},
+			"file": {
+				"type": "string",
+				"defaultValue": "input.txt"
+			}
+		},
+		"folder": {
+			"name": "L200 Module tryout"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().file",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@dataset().container",
+					"type": "Expression"
+				}
+			}
+		}
+	}
+}
