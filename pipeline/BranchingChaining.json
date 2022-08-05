@@ -36,13 +36,20 @@
 				"inputs": [
 					{
 						"referenceName": "SourceBlobTxt",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "@pipeline().parameters.sourceBlobContainer"
+						}
 					}
 				],
 				"outputs": [
 					{
 						"referenceName": "SinkBlok",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "@pipeline().parameters.sinkBlobContainer",
+							"file": "@concat(pipeline().RunId, '.txt')"
+						}
 					}
 				]
 			},
