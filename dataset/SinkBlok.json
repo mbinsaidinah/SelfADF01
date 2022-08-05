@@ -1,0 +1,37 @@
+{
+	"name": "SinkBlok",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorageGeneral",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"container": {
+				"type": "string",
+				"defaultValue": "@pipeline().parameters.sinkBlobContainer"
+			},
+			"file": {
+				"type": "string",
+				"defaultValue": "@concat(pipeline().RunId, '.txt')"
+			}
+		},
+		"folder": {
+			"name": "L200 Module tryout"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().file",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@dataset().container",
+					"type": "Expression"
+				}
+			}
+		}
+	}
+}
