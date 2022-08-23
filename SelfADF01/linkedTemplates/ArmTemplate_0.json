@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorageGeneral'"
 		},
+		"AzureBlobStoragedflabstoragegg2qq_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStoragedflabstoragegg2qq'"
+		},
 		"AzureDataLakeStorage1_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
@@ -22,10 +26,6 @@
 		"SqlServer1_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SqlServer1'"
-		},
-		"AzureBlobStoragedflabstoragegg2qq_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureBlobStoragedflabstoragegg2qq'"
 		},
 		"adlstestfikri_accountKey": {
 			"type": "secureString",
@@ -42,6 +42,10 @@
 		"adlstestfikri_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://testfikri.dfs.core.windows.net"
+		},
+		"blobadflabstoragegg2qqIAM_properties_typeProperties_serviceEndpoint": {
+			"type": "string",
+			"defaultValue": "https://adflabstoragegg2qq.blob.core.windows.net"
 		}
 	},
 	"variables": {
@@ -81,6 +85,19 @@
 				"type": "AzureBlobStorage",
 				"typeProperties": {
 					"connectionString": "[parameters('AzureBlobStorageGeneral_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStoragedflabstoragegg2qq')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureBlobStoragedflabstoragegg2qq_connectionString')]"
 				}
 			},
 			"dependsOn": []
@@ -146,30 +163,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/MSSQLSelfHostedIR')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "SelfHosted",
-				"description": "My local sql server",
-				"typeProperties": {}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureBlobStoragedflabstoragegg2qq')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('AzureBlobStoragedflabstoragegg2qq_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/adlstestfikri')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -182,6 +175,31 @@
 						"type": "SecureString",
 						"value": "[parameters('adlstestfikri_accountKey')]"
 					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/MSSQLSelfHostedIR')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"description": "My local sql server",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/blobadflabstoragegg2qqIAM')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"serviceEndpoint": "[parameters('blobadflabstoragegg2qqIAM_properties_typeProperties_serviceEndpoint')]",
+					"accountKind": "Storage"
 				}
 			},
 			"dependsOn": []
@@ -682,27 +700,29 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/LocalSQLServer')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"name": "[concat(parameters('factoryName'), '/adlstestfikricsv01')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"parameters": {
-					"DBName": {
-						"type": "String"
-					}
+				"linkedServiceName": {
+					"referenceName": "adlstestfikri",
+					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
-				"type": "SqlServer",
+				"type": "DelimitedText",
 				"typeProperties": {
-					"connectionString": "[parameters('LocalSQLServer_connectionString')]"
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "test"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
 				},
-				"connectVia": {
-					"referenceName": "MSSQLSelfHostedIR",
-					"type": "IntegrationRuntimeReference"
-				}
+				"schema": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/MSSQLSelfHostedIR')]"
+				"[concat(variables('factoryId'), '/linkedServices/adlstestfikri')]"
 			]
 		},
 		{
@@ -836,145 +856,27 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/adlstestfikricsv01')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
+			"name": "[concat(parameters('factoryName'), '/LocalSQLServer')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"linkedServiceName": {
-					"referenceName": "adlstestfikri",
-					"type": "LinkedServiceReference"
+				"parameters": {
+					"DBName": {
+						"type": "String"
+					}
 				},
 				"annotations": [],
-				"type": "DelimitedText",
+				"type": "SqlServer",
 				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileSystem": "test"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"quoteChar": "\""
+					"connectionString": "[parameters('LocalSQLServer_connectionString')]"
 				},
-				"schema": []
+				"connectVia": {
+					"referenceName": "MSSQLSelfHostedIR",
+					"type": "IntegrationRuntimeReference"
+				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/adlstestfikri')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/BranchingChaining')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data1",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "BinarySource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true
-								},
-								"formatSettings": {
-									"type": "BinaryReadSettings"
-								}
-							},
-							"sink": {
-								"type": "BinarySink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "SourceBlobTxt",
-								"type": "DatasetReference",
-								"parameters": {
-									"container": "@pipeline().parameters.sourceBlobContainer"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "SinkBlok",
-								"type": "DatasetReference",
-								"parameters": {
-									"container": "@pipeline().parameters.sinkBlobContainer",
-									"file": "@concat(pipeline().RunId, '.txt')"
-								}
-							}
-						]
-					},
-					{
-						"name": "Web1",
-						"type": "WebActivity",
-						"dependsOn": [
-							{
-								"activity": "Copy data1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"url": "https://prod-06.eastus2.logic.azure.com:443/workflows/4ebeb981688c449eb7c3da1fcc83139f/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=lqHDrYyyDs9KdFSv3Q0Afpx_ut3nsgj73cDf59v_fVc",
-							"method": "POST",
-							"headers": {
-								"Content-Type": "application/json"
-							},
-							"body": {
-								"message": "@{activity('Copy1').output.dataWritten}",
-								"dataFactoryName": "@{pipeline().DataFactory}",
-								"pipelineName": "@{pipeline().Pipeline}",
-								"receiver": "@pipeline().parameters.receiver"
-							}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"parameters": {
-					"sourceBlobContainer": {
-						"type": "string"
-					},
-					"sinkBlobContainer": {
-						"type": "string"
-					},
-					"receiver": {
-						"type": "string"
-					}
-				},
-				"folder": {
-					"name": "L200 Module tryout"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SourceBlobTxt')]",
-				"[concat(variables('factoryId'), '/datasets/SinkBlok')]"
+				"[concat(variables('factoryId'), '/integrationRuntimes/MSSQLSelfHostedIR')]"
 			]
 		}
 	]

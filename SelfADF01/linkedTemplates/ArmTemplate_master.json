@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorageGeneral'"
 		},
+		"AzureBlobStoragedflabstoragegg2qq_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStoragedflabstoragegg2qq'"
+		},
 		"AzureDataLakeStorage1_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
@@ -27,10 +31,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SqlServer1'"
 		},
-		"AzureBlobStoragedflabstoragegg2qq_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureBlobStoragedflabstoragegg2qq'"
-		},
 		"adlstestfikri_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'adlstestfikri'"
@@ -42,6 +42,10 @@
 		"adlstestfikri_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://testfikri.dfs.core.windows.net"
+		},
+		"blobadflabstoragegg2qqIAM_properties_typeProperties_serviceEndpoint": {
+			"type": "string",
+			"defaultValue": "https://adflabstoragegg2qq.blob.core.windows.net"
 		},
 		"containerUri": {
 			"type": "string",
@@ -73,6 +77,9 @@
 					"AzureBlobStorageGeneral_connectionString": {
 						"value": "[parameters('AzureBlobStorageGeneral_connectionString')]"
 					},
+					"AzureBlobStoragedflabstoragegg2qq_connectionString": {
+						"value": "[parameters('AzureBlobStoragedflabstoragegg2qq_connectionString')]"
+					},
 					"AzureDataLakeStorage1_accountKey": {
 						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
 					},
@@ -81,9 +88,6 @@
 					},
 					"SqlServer1_connectionString": {
 						"value": "[parameters('SqlServer1_connectionString')]"
-					},
-					"AzureBlobStoragedflabstoragegg2qq_connectionString": {
-						"value": "[parameters('AzureBlobStoragedflabstoragegg2qq_connectionString')]"
 					},
 					"adlstestfikri_accountKey": {
 						"value": "[parameters('adlstestfikri_accountKey')]"
@@ -96,6 +100,9 @@
 					},
 					"adlstestfikri_properties_typeProperties_url": {
 						"value": "[parameters('adlstestfikri_properties_typeProperties_url')]"
+					},
+					"blobadflabstoragegg2qqIAM_properties_typeProperties_serviceEndpoint": {
+						"value": "[parameters('blobadflabstoragegg2qqIAM_properties_typeProperties_serviceEndpoint')]"
 					}
 				}
 			},
