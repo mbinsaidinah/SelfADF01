@@ -8,6 +8,9 @@
 		"AzureBlobStorageGeneral_connectionString": {
 			"value": ""
 		},
+		"AzureDataLakeStorage1_accountKey": {
+			"value": ""
+		},
 		"AzureDatabricks1_accessToken": {
 			"value": ""
 		},
@@ -16,6 +19,18 @@
 		},
 		"SqlServer1_connectionString": {
 			"value": ""
+		},
+		"AzureBlobStoragedflabstoragegg2qq_connectionString": {
+			"value": ""
+		},
+		"adlstestfikri_accountKey": {
+			"value": ""
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"value": "https://fikriadls.dfs.core.windows.net/"
+		},
+		"adlstestfikri_properties_typeProperties_url": {
+			"value": "https://testfikri.dfs.core.windows.net"
 		},
 		"containerUri": {
 			"value": ""
