@@ -1,0 +1,11 @@
+{
+	"name": "blobadflabstoragegg2qqIAM",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"serviceEndpoint": "https://adflabstoragegg2qq.blob.core.windows.net",
+			"accountKind": "Storage"
+		}
+	}
+}
