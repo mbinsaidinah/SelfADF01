@@ -1,0 +1,7 @@
+{
+	"name": "AzurePostgreSql254",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/887c8aa5-917a-430d-9235-90d8e4950357/resourceGroups/MySelfTraingRG/providers/Microsoft.DBforPostgreSQL/servers/fikpostgressql",
+		"groupId": "postgresqlServer"
+	}
+}
