@@ -35,6 +35,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'adlstestfikri'"
 		},
+		"AzurePostgreSql1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzurePostgreSql1'"
+		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://fikriadls.dfs.core.windows.net/"
@@ -46,6 +50,22 @@
 		"blobadflabstoragegg2qqIAM_properties_typeProperties_serviceEndpoint": {
 			"type": "string",
 			"defaultValue": "https://adflabstoragegg2qq.blob.core.windows.net"
+		},
+		"AzurePostgreSql377_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/887c8aa5-917a-430d-9235-90d8e4950357/resourceGroups/MySelfTraingRG/providers/Microsoft.DBforPostgreSQL/servers/fikripostgresql01"
+		},
+		"AzurePostgreSql377_properties_groupId": {
+			"type": "string",
+			"defaultValue": "coordinator"
+		},
+		"AzurePostgreSql794_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/887c8aa5-917a-430d-9235-90d8e4950357/resourceGroups/MySelfTraingRG/providers/Microsoft.DBforPostgreSQL/servers/fikripostgresql01"
+		},
+		"AzurePostgreSql794_properties_groupId": {
+			"type": "string",
+			"defaultValue": "postgresqlServer"
 		},
 		"containerUri": {
 			"type": "string",
@@ -92,9 +112,6 @@
 					"adlstestfikri_accountKey": {
 						"value": "[parameters('adlstestfikri_accountKey')]"
 					},
-					"LocalSQLServer_connectionString": {
-						"value": "[parameters('LocalSQLServer_connectionString')]"
-					},
 					"AzureDataLakeStorage1_properties_typeProperties_url": {
 						"value": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]"
 					},
@@ -121,6 +138,24 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"LocalSQLServer_connectionString": {
+						"value": "[parameters('LocalSQLServer_connectionString')]"
+					},
+					"AzurePostgreSql1_connectionString": {
+						"value": "[parameters('AzurePostgreSql1_connectionString')]"
+					},
+					"AzurePostgreSql377_properties_privateLinkResourceId": {
+						"value": "[parameters('AzurePostgreSql377_properties_privateLinkResourceId')]"
+					},
+					"AzurePostgreSql377_properties_groupId": {
+						"value": "[parameters('AzurePostgreSql377_properties_groupId')]"
+					},
+					"AzurePostgreSql794_properties_privateLinkResourceId": {
+						"value": "[parameters('AzurePostgreSql794_properties_privateLinkResourceId')]"
+					},
+					"AzurePostgreSql794_properties_groupId": {
+						"value": "[parameters('AzurePostgreSql794_properties_groupId')]"
 					}
 				}
 			},

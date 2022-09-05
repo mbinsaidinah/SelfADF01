@@ -31,10 +31,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'adlstestfikri'"
 		},
-		"LocalSQLServer_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'LocalSQLServer'"
-		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://fikriadls.dfs.core.windows.net/"
@@ -180,17 +176,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/MSSQLSelfHostedIR')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "SelfHosted",
-				"description": "My local sql server",
-				"typeProperties": {}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/blobadflabstoragegg2qqIAM')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -202,6 +187,24 @@
 					"accountKind": "Storage"
 				}
 			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/MSSQLSelfHostedIR')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"description": "My local sql server",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/default')]",
+			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks",
+			"apiVersion": "2018-06-01",
+			"properties": {},
 			"dependsOn": []
 		},
 		{
@@ -853,30 +856,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStoragedflabstoragegg2qq')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LocalSQLServer')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"parameters": {
-					"DBName": {
-						"type": "String"
-					}
-				},
-				"annotations": [],
-				"type": "SqlServer",
-				"typeProperties": {
-					"connectionString": "[parameters('LocalSQLServer_connectionString')]"
-				},
-				"connectVia": {
-					"referenceName": "MSSQLSelfHostedIR",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/MSSQLSelfHostedIR')]"
 			]
 		}
 	]
