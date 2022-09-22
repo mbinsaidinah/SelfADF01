@@ -15,7 +15,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/mbinsaidinah@microsoft.com/mynotebook"
+					"notebookPath": "/Users/mbinsaidinah@microsoft.com/testfrjaya"
 				},
 				"linkedServiceName": {
 					"referenceName": "AzureDatabricks3 premium",
