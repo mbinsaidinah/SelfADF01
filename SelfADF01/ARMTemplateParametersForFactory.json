@@ -20,6 +20,9 @@
 		"AzurePostgreSql1_connectionString": {
 			"value": ""
 		},
+		"AzureSynapseAnalytics1_connectionString": {
+			"value": ""
+		},
 		"LocalSQLServer_connectionString": {
 			"value": ""
 		},
@@ -29,7 +32,7 @@
 		"adlstestfikri_accountKey": {
 			"value": ""
 		},
-		"AzureSynapseAnalytics1_connectionString": {
+		"AzureDatabricks3 premium_accessToken": {
 			"value": ""
 		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
