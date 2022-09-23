@@ -29,6 +29,7 @@
 					},
 					"sink": {
 						"type": "SqlServerSink",
+						"preCopyScript": "truncate table [dbo].[Clone_DimCustomer2];",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false
 					},
@@ -48,11 +49,11 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"tablename": {
-								"value": "@concat('Clone_', activity('LookupMetadata').output.value[1])",
+								"value": "@concat('Clone_', activity('LookupMetadata').output.value[1].naming)",
 								"type": "Expression"
 							},
 							"schema": {
-								"value": "@activity('LookupMetadata').output.value[0]",
+								"value": "@activity('LookupMetadata').output.value[0].naming",
 								"type": "Expression"
 							}
 						}
@@ -64,11 +65,11 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"tablename": {
-								"value": "@concat('Clone_', activity('LookupMetadata').output.value[1],'2')",
+								"value": "@concat('Clone_', activity('LookupMetadata').output.value[1].naming,'2')",
 								"type": "Expression"
 							},
 							"schema": {
-								"value": "@activity('LookupMetadata').output.value[0]",
+								"value": "@activity('LookupMetadata').output.value[0].naming",
 								"type": "Expression"
 							}
 						}
