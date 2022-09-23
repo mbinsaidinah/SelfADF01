@@ -1,0 +1,15 @@
+{
+	"name": "MySQLLocalTablename",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LocalSQLServer",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"DBName": "AdventureWorksDW2019"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": []
+	}
+}

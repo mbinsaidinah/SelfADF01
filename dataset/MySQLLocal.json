@@ -1,0 +1,33 @@
+{
+	"name": "MySQLLocal",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LocalSQLServer",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"DBName": "AdventureWorksDW2019"
+			}
+		},
+		"parameters": {
+			"tablename": {
+				"type": "string"
+			},
+			"schema": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().schema",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().tablename",
+				"type": "Expression"
+			}
+		}
+	}
+}
