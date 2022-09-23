@@ -1,0 +1,119 @@
+{
+	"name": "Copy Activity SQL DW",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data2",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "LookupMetadata",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlDWSource",
+						"sqlReaderQuery": {
+							"value": "@concat('select distinct * from ',activity('LookupMetadata').output.value[0].naming, '.', activity('LookupMetadata').output.value[1].naming)",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "SqlDWSink",
+						"preCopyScript": "truncate table [Staging].[Clone_DimAirline]",
+						"allowPolyBase": true,
+						"polyBaseSettings": {
+							"rejectValue": 3,
+							"rejectType": "value",
+							"useTypeDefault": true
+						},
+						"disableMetricsCollection": false
+					},
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "adlstestfikri",
+							"type": "LinkedServiceReference"
+						},
+						"path": "logtest/2209140050001514"
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "SQLDW",
+						"type": "DatasetReference",
+						"parameters": {
+							"tablename": {
+								"value": "@activity('LookupMetadata').output.value[1].naming",
+								"type": "Expression"
+							},
+							"schema": {
+								"value": "@activity('LookupMetadata').output.value[0].naming",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "SQLDW",
+						"type": "DatasetReference",
+						"parameters": {
+							"tablename": {
+								"value": "@concat('Clone_', activity('LookupMetadata').output.value[1].naming)",
+								"type": "Expression"
+							},
+							"schema": {
+								"value": "@activity('LookupMetadata').output.value[0].naming",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "LookupMetadata",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlDWSource",
+						"sqlReaderQuery": "select * from dbo.tablenames",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "SQLDWTablename",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			}
+		],
+		"folder": {
+			"name": "2209140050001514 - Copy Activity"
+		},
+		"annotations": []
+	}
+}
