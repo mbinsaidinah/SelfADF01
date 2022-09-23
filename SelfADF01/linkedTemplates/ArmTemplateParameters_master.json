@@ -17,6 +17,9 @@
 		"AzureDatabricks1_accessToken": {
 			"value": ""
 		},
+		"AzureDatabricks3 premium_accessToken": {
+			"value": ""
+		},
 		"AzurePostgreSql1_connectionString": {
 			"value": ""
 		},
@@ -30,9 +33,6 @@
 			"value": ""
 		},
 		"adlstestfikri_accountKey": {
-			"value": ""
-		},
-		"AzureDatabricks3 premium_accessToken": {
 			"value": ""
 		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
