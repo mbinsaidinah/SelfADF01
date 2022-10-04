@@ -168,9 +168,6 @@
 					"LocalSQLServer_connectionString": {
 						"value": "[parameters('LocalSQLServer_connectionString')]"
 					},
-					"AzureBlobStoragewithVnet_connectionString": {
-						"value": "[parameters('AzureBlobStoragewithVnet_connectionString')]"
-					},
 					"AzureBlobStorage626_properties_privateLinkResourceId": {
 						"value": "[parameters('AzureBlobStorage626_properties_privateLinkResourceId')]"
 					},
@@ -208,6 +205,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"AzureBlobStoragewithVnet_connectionString": {
+						"value": "[parameters('AzureBlobStoragewithVnet_connectionString')]"
 					},
 					"AzurePostgreSql1_connectionString": {
 						"value": "[parameters('AzurePostgreSql1_connectionString')]"

@@ -11,10 +11,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'LocalSQLServer'"
 		},
-		"AzureBlobStoragewithVnet_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureBlobStoragewithVnet'"
-		},
 		"AzureBlobStorage626_properties_privateLinkResourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/887c8aa5-917a-430d-9235-90d8e4950357/resourceGroups/MySelfTraingRG/providers/Microsoft.Storage/storageAccounts/adlsvnet01"
@@ -44,6 +40,84 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Json1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorageGeneral",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "small_radio_json.json",
+						"folderPath": "tables",
+						"container": "data"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"ts": {
+							"type": "integer"
+						},
+						"userId": {
+							"type": "string"
+						},
+						"sessionId": {
+							"type": "integer"
+						},
+						"page": {
+							"type": "string"
+						},
+						"auth": {
+							"type": "string"
+						},
+						"method": {
+							"type": "string"
+						},
+						"status": {
+							"type": "integer"
+						},
+						"level": {
+							"type": "string"
+						},
+						"itemInSession": {
+							"type": "integer"
+						},
+						"location": {
+							"type": "string"
+						},
+						"lastName": {
+							"type": "string"
+						},
+						"firstName": {
+							"type": "string"
+						},
+						"registration": {
+							"type": "integer"
+						},
+						"gender": {
+							"type": "string"
+						},
+						"artist": {
+							"type": "string"
+						},
+						"song": {
+							"type": "string"
+						},
+						"length": {
+							"type": "number"
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Json2Sink')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
@@ -915,25 +989,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/LocalSQLServer')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureBlobStoragewithVnet')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('AzureBlobStoragewithVnet_connectionString')]"
-				},
-				"connectVia": {
-					"referenceName": "VnetIR",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/VnetIR')]"
 			]
 		}
 	]
