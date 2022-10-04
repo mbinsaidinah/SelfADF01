@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStoragedflabstoragegg2qq'"
 		},
+		"AzureBlobStoragewithVnet_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStoragewithVnet'"
+		},
 		"AzureDataLakeStorage1_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
@@ -53,19 +57,19 @@
 		},
 		"adlstestfikri_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://testfikri.dfs.core.windows.net"
+			"defaultValue": "https://fikriadls.dfs.core.windows.net/"
 		},
 		"blobadflabstoragegg2qqIAM_properties_typeProperties_serviceEndpoint": {
 			"type": "string",
 			"defaultValue": "https://adflabstoragegg2qq.blob.core.windows.net"
 		},
-		"AzurePostgreSql377_properties_privateLinkResourceId": {
+		"AzureBlobStorage626_properties_privateLinkResourceId": {
 			"type": "string",
-			"defaultValue": "/subscriptions/887c8aa5-917a-430d-9235-90d8e4950357/resourceGroups/MySelfTraingRG/providers/Microsoft.DBforPostgreSQL/servers/fikripostgresql01"
+			"defaultValue": "/subscriptions/887c8aa5-917a-430d-9235-90d8e4950357/resourceGroups/MySelfTraingRG/providers/Microsoft.Storage/storageAccounts/adlsvnet01"
 		},
-		"AzurePostgreSql377_properties_groupId": {
+		"AzureBlobStorage626_properties_groupId": {
 			"type": "string",
-			"defaultValue": "coordinator"
+			"defaultValue": "blob"
 		},
 		"AzurePostgreSql794_properties_privateLinkResourceId": {
 			"type": "string",
@@ -74,6 +78,14 @@
 		"AzurePostgreSql794_properties_groupId": {
 			"type": "string",
 			"defaultValue": "postgresqlServer"
+		},
+		"myblobvnet_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/887c8aa5-917a-430d-9235-90d8e4950357/resourceGroups/MySelfTraingRG/providers/Microsoft.Storage/storageAccounts/myblobstorage011"
+		},
+		"myblobvnet_properties_groupId": {
+			"type": "string",
+			"defaultValue": "blob"
 		}
 	},
 	"variables": {
@@ -400,6 +412,137 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Copy Activity SQL DW')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data2",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "LookupMetadata",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlDWSource",
+								"sqlReaderQuery": {
+									"value": "@concat('select distinct * from ',activity('LookupMetadata').output.value[0].naming, '.', activity('LookupMetadata').output.value[1].naming)",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "SqlDWSink",
+								"preCopyScript": "truncate table [Staging].[Clone_DimAirline]",
+								"allowPolyBase": true,
+								"polyBaseSettings": {
+									"rejectValue": 3,
+									"rejectType": "value",
+									"useTypeDefault": true
+								},
+								"disableMetricsCollection": false
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "adlstestfikri",
+									"type": "LinkedServiceReference"
+								},
+								"path": "logtest/2209140050001514"
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "SQLDW",
+								"type": "DatasetReference",
+								"parameters": {
+									"tablename": {
+										"value": "@activity('LookupMetadata').output.value[1].naming",
+										"type": "Expression"
+									},
+									"schema": {
+										"value": "@activity('LookupMetadata').output.value[0].naming",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SQLDW",
+								"type": "DatasetReference",
+								"parameters": {
+									"tablename": {
+										"value": "@concat('Clone_', activity('LookupMetadata').output.value[1].naming)",
+										"type": "Expression"
+									},
+									"schema": {
+										"value": "@activity('LookupMetadata').output.value[0].naming",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					},
+					{
+						"name": "LookupMetadata",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlDWSource",
+								"sqlReaderQuery": "select * from dbo.tablenames",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SQLDWTablename",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "2209140050001514 - Copy Activity"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SQLDW')]",
+				"[concat(variables('factoryId'), '/datasets/SQLDWTablename')]",
+				"[concat(variables('factoryId'), '/linkedServices/adlstestfikri')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DataFlowpipeline')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -673,6 +816,56 @@
 				"[concat(variables('factoryId'), '/datasets/blobcsv01')]",
 				"[concat(variables('factoryId'), '/datasets/adlstestfikricsv01')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Web1",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "https://management.azure.com/subscriptions/887c8aa5-917a-430d-9235-90d8e4950357/resourceGroups/SeaDev2/providers/Microsoft.DataFactory/factories/SeaDevADF/pipelineruns/aa4d1e74-39ff-46a8-afff-fb7bce5cebfa/cancel?api-version=2018-06-01",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {},
+							"body": {
+								"value": "{\n“message”: ”Cancelling the pipeline”\n}",
+								"type": "Expression"
+							},
+							"authentication": {
+								"type": "MSI",
+								"resource": {
+									"value": "https://management.azure.com/",
+									"type": "Expression"
+								}
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "2210030030000418 - Cancel pipeline"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/sqltoblob')]",
@@ -1519,6 +1712,59 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/SQLDW')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSynapseAnalytics1",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"tablename": {
+						"type": "string"
+					},
+					"schema": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().schema",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().tablename",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSynapseAnalytics1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SQLDWTablename')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSynapseAnalytics1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSynapseAnalytics1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SelfHostedSQLDB')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1812,6 +2058,25 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStoragewithVnet')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureBlobStoragewithVnet_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "VnetIR",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/VnetIR')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage1')]",
@@ -2258,12 +2523,12 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/default/AzurePostgreSql377')]",
+			"name": "[concat(parameters('factoryName'), '/default/AzureBlobStorage626')]",
 			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"privateLinkResourceId": "[parameters('AzurePostgreSql377_properties_privateLinkResourceId')]",
-				"groupId": "[parameters('AzurePostgreSql377_properties_groupId')]"
+				"privateLinkResourceId": "[parameters('AzureBlobStorage626_properties_privateLinkResourceId')]",
+				"groupId": "[parameters('AzureBlobStorage626_properties_groupId')]"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
@@ -2276,6 +2541,18 @@
 			"properties": {
 				"privateLinkResourceId": "[parameters('AzurePostgreSql794_properties_privateLinkResourceId')]",
 				"groupId": "[parameters('AzurePostgreSql794_properties_groupId')]"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/default/myblobvnet')]",
+			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"privateLinkResourceId": "[parameters('myblobvnet_properties_privateLinkResourceId')]",
+				"groupId": "[parameters('myblobvnet_properties_groupId')]"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"

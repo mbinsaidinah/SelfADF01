@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStoragedflabstoragegg2qq'"
 		},
+		"AzureBlobStoragewithVnet_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStoragewithVnet'"
+		},
 		"AzureDataLakeStorage1_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
@@ -53,19 +57,19 @@
 		},
 		"adlstestfikri_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://testfikri.dfs.core.windows.net"
+			"defaultValue": "https://fikriadls.dfs.core.windows.net/"
 		},
 		"blobadflabstoragegg2qqIAM_properties_typeProperties_serviceEndpoint": {
 			"type": "string",
 			"defaultValue": "https://adflabstoragegg2qq.blob.core.windows.net"
 		},
-		"AzurePostgreSql377_properties_privateLinkResourceId": {
+		"AzureBlobStorage626_properties_privateLinkResourceId": {
 			"type": "string",
-			"defaultValue": "/subscriptions/887c8aa5-917a-430d-9235-90d8e4950357/resourceGroups/MySelfTraingRG/providers/Microsoft.DBforPostgreSQL/servers/fikripostgresql01"
+			"defaultValue": "/subscriptions/887c8aa5-917a-430d-9235-90d8e4950357/resourceGroups/MySelfTraingRG/providers/Microsoft.Storage/storageAccounts/adlsvnet01"
 		},
-		"AzurePostgreSql377_properties_groupId": {
+		"AzureBlobStorage626_properties_groupId": {
 			"type": "string",
-			"defaultValue": "coordinator"
+			"defaultValue": "blob"
 		},
 		"AzurePostgreSql794_properties_privateLinkResourceId": {
 			"type": "string",
@@ -74,6 +78,14 @@
 		"AzurePostgreSql794_properties_groupId": {
 			"type": "string",
 			"defaultValue": "postgresqlServer"
+		},
+		"myblobvnet_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/887c8aa5-917a-430d-9235-90d8e4950357/resourceGroups/MySelfTraingRG/providers/Microsoft.Storage/storageAccounts/myblobstorage011"
+		},
+		"myblobvnet_properties_groupId": {
+			"type": "string",
+			"defaultValue": "blob"
 		},
 		"containerUri": {
 			"type": "string",
@@ -156,20 +168,26 @@
 					"LocalSQLServer_connectionString": {
 						"value": "[parameters('LocalSQLServer_connectionString')]"
 					},
-					"AzurePostgreSql1_connectionString": {
-						"value": "[parameters('AzurePostgreSql1_connectionString')]"
+					"AzureBlobStoragewithVnet_connectionString": {
+						"value": "[parameters('AzureBlobStoragewithVnet_connectionString')]"
 					},
-					"AzurePostgreSql377_properties_privateLinkResourceId": {
-						"value": "[parameters('AzurePostgreSql377_properties_privateLinkResourceId')]"
+					"AzureBlobStorage626_properties_privateLinkResourceId": {
+						"value": "[parameters('AzureBlobStorage626_properties_privateLinkResourceId')]"
 					},
-					"AzurePostgreSql377_properties_groupId": {
-						"value": "[parameters('AzurePostgreSql377_properties_groupId')]"
+					"AzureBlobStorage626_properties_groupId": {
+						"value": "[parameters('AzureBlobStorage626_properties_groupId')]"
 					},
 					"AzurePostgreSql794_properties_privateLinkResourceId": {
 						"value": "[parameters('AzurePostgreSql794_properties_privateLinkResourceId')]"
 					},
 					"AzurePostgreSql794_properties_groupId": {
 						"value": "[parameters('AzurePostgreSql794_properties_groupId')]"
+					},
+					"myblobvnet_properties_privateLinkResourceId": {
+						"value": "[parameters('myblobvnet_properties_privateLinkResourceId')]"
+					},
+					"myblobvnet_properties_groupId": {
+						"value": "[parameters('myblobvnet_properties_groupId')]"
 					}
 				}
 			},
@@ -190,6 +208,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"AzurePostgreSql1_connectionString": {
+						"value": "[parameters('AzurePostgreSql1_connectionString')]"
 					}
 				}
 			},

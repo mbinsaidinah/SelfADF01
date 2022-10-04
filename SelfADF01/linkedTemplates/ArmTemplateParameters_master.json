@@ -11,6 +11,9 @@
 		"AzureBlobStoragedflabstoragegg2qq_connectionString": {
 			"value": ""
 		},
+		"AzureBlobStoragewithVnet_connectionString": {
+			"value": ""
+		},
 		"AzureDataLakeStorage1_accountKey": {
 			"value": ""
 		},
@@ -39,22 +42,28 @@
 			"value": "https://fikriadls.dfs.core.windows.net/"
 		},
 		"adlstestfikri_properties_typeProperties_url": {
-			"value": "https://testfikri.dfs.core.windows.net"
+			"value": "https://fikriadls.dfs.core.windows.net/"
 		},
 		"blobadflabstoragegg2qqIAM_properties_typeProperties_serviceEndpoint": {
 			"value": "https://adflabstoragegg2qq.blob.core.windows.net"
 		},
-		"AzurePostgreSql377_properties_privateLinkResourceId": {
-			"value": "/subscriptions/887c8aa5-917a-430d-9235-90d8e4950357/resourceGroups/MySelfTraingRG/providers/Microsoft.DBforPostgreSQL/servers/fikripostgresql01"
+		"AzureBlobStorage626_properties_privateLinkResourceId": {
+			"value": "/subscriptions/887c8aa5-917a-430d-9235-90d8e4950357/resourceGroups/MySelfTraingRG/providers/Microsoft.Storage/storageAccounts/adlsvnet01"
 		},
-		"AzurePostgreSql377_properties_groupId": {
-			"value": "coordinator"
+		"AzureBlobStorage626_properties_groupId": {
+			"value": "blob"
 		},
 		"AzurePostgreSql794_properties_privateLinkResourceId": {
 			"value": "/subscriptions/887c8aa5-917a-430d-9235-90d8e4950357/resourceGroups/MySelfTraingRG/providers/Microsoft.DBforPostgreSQL/servers/fikripostgresql01"
 		},
 		"AzurePostgreSql794_properties_groupId": {
 			"value": "postgresqlServer"
+		},
+		"myblobvnet_properties_privateLinkResourceId": {
+			"value": "/subscriptions/887c8aa5-917a-430d-9235-90d8e4950357/resourceGroups/MySelfTraingRG/providers/Microsoft.Storage/storageAccounts/myblobstorage011"
+		},
+		"myblobvnet_properties_groupId": {
+			"value": "blob"
 		},
 		"containerUri": {
 			"value": ""
