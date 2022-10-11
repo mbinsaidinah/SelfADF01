@@ -55,6 +55,10 @@
 			"type": "string",
 			"defaultValue": "https://fikriadls.dfs.core.windows.net/"
 		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://mydevkey01.vault.azure.net/"
+		},
 		"adlstestfikri_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://fikriadls.dfs.core.windows.net/"
@@ -140,6 +144,9 @@
 					},
 					"AzureDataLakeStorage1_properties_typeProperties_url": {
 						"value": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]"
+					},
+					"AzureKeyVault1_properties_typeProperties_baseUrl": {
+						"value": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
 					},
 					"adlstestfikri_properties_typeProperties_url": {
 						"value": "[parameters('adlstestfikri_properties_typeProperties_url')]"

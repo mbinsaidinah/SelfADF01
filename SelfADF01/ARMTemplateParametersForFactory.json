@@ -41,6 +41,9 @@
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"value": "https://fikriadls.dfs.core.windows.net/"
 		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"value": "https://mydevkey01.vault.azure.net/"
+		},
 		"adlstestfikri_properties_typeProperties_url": {
 			"value": "https://fikriadls.dfs.core.windows.net/"
 		},
