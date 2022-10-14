@@ -1,0 +1,11 @@
+{
+	"name": "MyOData",
+	"properties": {
+		"annotations": [],
+		"type": "OData",
+		"typeProperties": {
+			"url": "https://services.odata.org/OData/OData.svc",
+			"authenticationType": "Anonymous"
+		}
+	}
+}
