@@ -1,0 +1,35 @@
+{
+	"name": "Odata",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "ODataSource",
+						"query": "$filter=Price lt 22.8 and Price gt 3.5",
+						"httpRequestTimeout": "00:05:00"
+					},
+					"dataset": {
+						"referenceName": "ODataResource1",
+						"type": "DatasetReference"
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "2210110030000498 Odata"
+		},
+		"annotations": []
+	}
+}
