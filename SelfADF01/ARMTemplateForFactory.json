@@ -59,6 +59,10 @@
 			"type": "string",
 			"defaultValue": "https://mydevkey01.vault.azure.net/"
 		},
+		"MyOData_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://services.odata.org/OData/OData.svc"
+		},
 		"adlstestfikri_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://fikriadls.dfs.core.windows.net/"
@@ -628,6 +632,51 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureDatabricks3 premium')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Odata')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Lookup1",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ODataSource",
+								"query": "$filter=Price lt 22.8 and Price gt 3.5",
+								"httpRequestTimeout": "00:05:00"
+							},
+							"dataset": {
+								"referenceName": "ODataResource1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "2210110030000498 Odata"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ODataResource1')]"
 			]
 		},
 		{
@@ -1745,6 +1794,26 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ODataResource1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "MyOData",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "ODataResource",
+				"schema": [],
+				"typeProperties": {
+					"path": "Products"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/MyOData')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SQLDBHosted')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2290,6 +2359,20 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/integrationRuntimes/MSSQLSelfHostedIR')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/MyOData')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "OData",
+				"typeProperties": {
+					"url": "[parameters('MyOData_properties_typeProperties_url')]",
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SqlServer1')]",

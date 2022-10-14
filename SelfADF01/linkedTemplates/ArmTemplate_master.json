@@ -59,6 +59,10 @@
 			"type": "string",
 			"defaultValue": "https://mydevkey01.vault.azure.net/"
 		},
+		"MyOData_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://services.odata.org/OData/OData.svc"
+		},
 		"adlstestfikri_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://fikriadls.dfs.core.windows.net/"
@@ -147,6 +151,9 @@
 					},
 					"AzureKeyVault1_properties_typeProperties_baseUrl": {
 						"value": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
+					},
+					"MyOData_properties_typeProperties_url": {
+						"value": "[parameters('MyOData_properties_typeProperties_url')]"
 					},
 					"adlstestfikri_properties_typeProperties_url": {
 						"value": "[parameters('adlstestfikri_properties_typeProperties_url')]"

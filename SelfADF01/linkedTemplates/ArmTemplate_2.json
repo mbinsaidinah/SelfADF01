@@ -21,6 +21,86 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/MySQLLocal')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LocalSQLServer",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"DBName": "AdventureWorksDW2019"
+					}
+				},
+				"parameters": {
+					"tablename": {
+						"type": "string"
+					},
+					"schema": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().schema",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().tablename",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/MySQLLocalTablename')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LocalSQLServer",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"DBName": "AdventureWorksDW2019"
+					}
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "DimCurrency"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SQLDBHosted')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LocalSQLServer",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"DBName": "AdventureWorksDW2019"
+					}
+				},
+				"folder": {
+					"name": "L200 Module tryout"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SelfHostedSQLDB')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -424,7 +504,10 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/MySQLLocal')]",
+				"[concat(variables('factoryId'), '/datasets/MySQLLocalTablename')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DataFlowpipeline')]",
@@ -643,7 +726,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SQLDBHosted')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/AzurePostgreSqlTable1')]",

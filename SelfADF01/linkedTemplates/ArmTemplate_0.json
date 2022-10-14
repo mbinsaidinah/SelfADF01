@@ -47,6 +47,10 @@
 			"type": "string",
 			"defaultValue": "https://mydevkey01.vault.azure.net/"
 		},
+		"MyOData_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://services.odata.org/OData/OData.svc"
+		},
 		"adlstestfikri_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://fikriadls.dfs.core.windows.net/"
@@ -319,6 +323,20 @@
 				"type": "AzureSqlDW",
 				"typeProperties": {
 					"connectionString": "[parameters('AzureSynapseAnalytics1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/MyOData')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "OData",
+				"typeProperties": {
+					"url": "[parameters('MyOData_properties_typeProperties_url')]",
+					"authenticationType": "Anonymous"
 				}
 			},
 			"dependsOn": []
@@ -653,40 +671,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/SqlServer1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/BinaryDataset')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorageGeneral",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"directory": {
-						"type": "string"
-					}
-				},
-				"folder": {
-					"name": "L200 Module tryout"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": {
-							"value": "@dataset().directory",
-							"type": "Expression"
-						},
-						"container": "data"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorageGeneral')]"
 			]
 		}
 	]
