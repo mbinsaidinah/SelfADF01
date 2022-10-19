@@ -34,44 +34,20 @@
 		"myblobvnet_properties_groupId": {
 			"type": "string",
 			"defaultValue": "blob"
+		},
+		"myselfsqld01_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/887c8aa5-917a-430d-9235-90d8e4950357/resourceGroups/MySelfTraingRG/providers/Microsoft.Sql/servers/myselfsqlserver01"
+		},
+		"myselfsqld01_properties_groupId": {
+			"type": "string",
+			"defaultValue": "sqlServer"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
-		{
-			"name": "[concat(parameters('factoryName'), '/BinaryDataset')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorageGeneral",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"directory": {
-						"type": "string"
-					}
-				},
-				"folder": {
-					"name": "L200 Module tryout"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": {
-							"value": "@dataset().directory",
-							"type": "Expression"
-						},
-						"container": "data"
-					}
-				}
-			},
-			"dependsOn": []
-		},
 		{
 			"name": "[concat(parameters('factoryName'), '/BlobCSV')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
@@ -645,6 +621,16 @@
 			"properties": {
 				"privateLinkResourceId": "[parameters('myblobvnet_properties_privateLinkResourceId')]",
 				"groupId": "[parameters('myblobvnet_properties_groupId')]"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/default/myselfsqld01')]",
+			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"privateLinkResourceId": "[parameters('myselfsqld01_properties_privateLinkResourceId')]",
+				"groupId": "[parameters('myselfsqld01_properties_groupId')]"
 			},
 			"dependsOn": []
 		},
