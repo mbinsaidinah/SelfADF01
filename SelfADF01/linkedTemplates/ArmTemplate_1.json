@@ -49,6 +49,38 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/BinaryDataset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorageGeneral",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"directory": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "L200 Module tryout"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": {
+							"value": "@dataset().directory",
+							"type": "Expression"
+						},
+						"container": "data"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/BlobCSV')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -394,6 +426,54 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/UBSSource')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "adlstestfikri",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"folder": {
+						"type": "string"
+					},
+					"filename": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().filename",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().folder",
+							"type": "Expression"
+						},
+						"fileSystem": "ubssource"
+					},
+					"columnDelimiter": "^~|",
+					"escapeChar": "",
+					"firstRowAsHeader": true,
+					"quoteChar": ""
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/adlstestfikricsv01')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -546,6 +626,177 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/stgparquet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "adlstestfikri",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "ubsstg"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ubsSTG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSynapseAnalytics1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "ACC_N",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "FOM_I",
+						"type": "decimal",
+						"precision": 9,
+						"scale": 0
+					},
+					{
+						"name": "FOM_VER_D",
+						"type": "datetime2",
+						"scale": 0
+					},
+					{
+						"name": "DOC_C",
+						"type": "varchar"
+					},
+					{
+						"name": "DOC_PSTED_M",
+						"type": "datetime2",
+						"scale": 6
+					},
+					{
+						"name": "DOC_SBST_C",
+						"type": "varchar"
+					},
+					{
+						"name": "ED_END_D",
+						"type": "datetime2",
+						"scale": 0
+					},
+					{
+						"name": "DOC_SGTR_D",
+						"type": "datetime2",
+						"scale": 0
+					},
+					{
+						"name": "DOC_LOC_TYP_C",
+						"type": "varchar"
+					},
+					{
+						"name": "DOC_LOC_V",
+						"type": "varchar"
+					},
+					{
+						"name": "DOC_LOC_D",
+						"type": "datetime2",
+						"scale": 0
+					},
+					{
+						"name": "DOC_NWS_I",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "DOC_RPAPR_D",
+						"type": "datetime2",
+						"scale": 0
+					},
+					{
+						"name": "ED_UPD_M",
+						"type": "datetime2",
+						"scale": 6
+					},
+					{
+						"name": "ED_USA_I",
+						"type": "varchar"
+					},
+					{
+						"name": "APPVL_D",
+						"type": "datetime2",
+						"scale": 0
+					},
+					{
+						"name": "DOC_STAT_C",
+						"type": "varchar"
+					},
+					{
+						"name": "TRTY_CNTRY_C",
+						"type": "varchar"
+					},
+					{
+						"name": "DOC_CNTNT_MGR_M",
+						"type": "datetime2",
+						"scale": 6
+					},
+					{
+						"name": "DOC_STRM_I",
+						"type": "decimal",
+						"precision": 15,
+						"scale": 0
+					},
+					{
+						"name": "DOC_PID_I",
+						"type": "varchar"
+					},
+					{
+						"name": "DOC_ESGTR_APPVL_F",
+						"type": "varchar"
+					},
+					{
+						"name": "DOC_SRCE_FROM_C",
+						"type": "varchar"
+					},
+					{
+						"name": "LCL_SCAN_F",
+						"type": "varchar"
+					},
+					{
+						"name": "DOC_UNIV_KEY_I",
+						"type": "decimal",
+						"precision": 15,
+						"scale": 0
+					},
+					{
+						"name": "DOC_PREV_LOC_V",
+						"type": "varchar"
+					},
+					{
+						"name": "DOC_MF_ACC_N",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "STG_LEGACY_DWCSADM",
+					"table": "ACCT_DOC_FACT"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/LocalSQLServer')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -633,375 +884,6 @@
 				"groupId": "[parameters('myselfsqld01_properties_groupId')]"
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/BranchingChaining')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data1",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "BinarySource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true
-								},
-								"formatSettings": {
-									"type": "BinaryReadSettings"
-								}
-							},
-							"sink": {
-								"type": "BinarySink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "SourceBlobTxt",
-								"type": "DatasetReference",
-								"parameters": {
-									"container": "@pipeline().parameters.sourceBlobContainer"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "SinkBlok",
-								"type": "DatasetReference",
-								"parameters": {
-									"container": "@pipeline().parameters.sinkBlobContainer",
-									"file": "@concat(pipeline().RunId, '.txt')"
-								}
-							}
-						]
-					},
-					{
-						"name": "Web1",
-						"type": "WebActivity",
-						"dependsOn": [
-							{
-								"activity": "Copy data1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"url": "https://prod-06.eastus2.logic.azure.com:443/workflows/4ebeb981688c449eb7c3da1fcc83139f/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=lqHDrYyyDs9KdFSv3Q0Afpx_ut3nsgj73cDf59v_fVc",
-							"method": "POST",
-							"headers": {
-								"Content-Type": "application/json"
-							},
-							"body": {
-								"message": "@{activity('Copy1').output.dataWritten}",
-								"dataFactoryName": "@{pipeline().DataFactory}",
-								"pipelineName": "@{pipeline().Pipeline}",
-								"receiver": "@pipeline().parameters.receiver"
-							}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"parameters": {
-					"sourceBlobContainer": {
-						"type": "string"
-					},
-					"sinkBlobContainer": {
-						"type": "string"
-					},
-					"receiver": {
-						"type": "string"
-					}
-				},
-				"folder": {
-					"name": "L200 Module tryout"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SourceBlobTxt')]",
-				"[concat(variables('factoryId'), '/datasets/SinkBlok')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Copy Activity SQL DW')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data2",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "LookupMetadata",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlDWSource",
-								"sqlReaderQuery": {
-									"value": "@concat('select distinct * from ',activity('LookupMetadata').output.value[0].naming, '.', activity('LookupMetadata').output.value[1].naming)",
-									"type": "Expression"
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "SqlDWSink",
-								"preCopyScript": "truncate table [Staging].[Clone_DimAirline]",
-								"allowPolyBase": true,
-								"polyBaseSettings": {
-									"rejectValue": 3,
-									"rejectType": "value",
-									"useTypeDefault": true
-								},
-								"disableMetricsCollection": false
-							},
-							"enableStaging": true,
-							"stagingSettings": {
-								"linkedServiceName": {
-									"referenceName": "adlstestfikri",
-									"type": "LinkedServiceReference"
-								},
-								"path": "logtest/2209140050001514"
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "SQLDW",
-								"type": "DatasetReference",
-								"parameters": {
-									"tablename": {
-										"value": "@activity('LookupMetadata').output.value[1].naming",
-										"type": "Expression"
-									},
-									"schema": {
-										"value": "@activity('LookupMetadata').output.value[0].naming",
-										"type": "Expression"
-									}
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "SQLDW",
-								"type": "DatasetReference",
-								"parameters": {
-									"tablename": {
-										"value": "@concat('Clone_', activity('LookupMetadata').output.value[1].naming)",
-										"type": "Expression"
-									},
-									"schema": {
-										"value": "@activity('LookupMetadata').output.value[0].naming",
-										"type": "Expression"
-									}
-								}
-							}
-						]
-					},
-					{
-						"name": "LookupMetadata",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlDWSource",
-								"sqlReaderQuery": "select * from dbo.tablenames",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "SQLDWTablename",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"firstRowOnly": false
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "2209140050001514 - Copy Activity"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SQLDW')]",
-				"[concat(variables('factoryId'), '/datasets/SQLDWTablename')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Odata')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Lookup1",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "ODataSource",
-								"query": "$filter=Price lt 22.8 and Price gt 3.5",
-								"httpRequestTimeout": "00:05:00"
-							},
-							"dataset": {
-								"referenceName": "ODataResource1",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "2210110030000498 Odata"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ODataResource1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/copy between different storage account')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data1",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "blobcsv01",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "adlstestfikricsv01",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/blobcsv01')]",
-				"[concat(variables('factoryId'), '/datasets/adlstestfikricsv01')]"
-			]
 		}
 	]
 }
