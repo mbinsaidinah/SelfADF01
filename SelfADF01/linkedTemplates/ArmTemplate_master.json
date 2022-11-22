@@ -199,18 +199,6 @@
 					},
 					"AzureBlobStorage626_properties_groupId": {
 						"value": "[parameters('AzureBlobStorage626_properties_groupId')]"
-					},
-					"AzurePostgreSql794_properties_privateLinkResourceId": {
-						"value": "[parameters('AzurePostgreSql794_properties_privateLinkResourceId')]"
-					},
-					"AzurePostgreSql794_properties_groupId": {
-						"value": "[parameters('AzurePostgreSql794_properties_groupId')]"
-					},
-					"myblobvnet_properties_privateLinkResourceId": {
-						"value": "[parameters('myblobvnet_properties_privateLinkResourceId')]"
-					},
-					"myblobvnet_properties_groupId": {
-						"value": "[parameters('myblobvnet_properties_groupId')]"
 					}
 				}
 			},
@@ -240,6 +228,18 @@
 					},
 					"myselfsqldb01vnet_connectionString": {
 						"value": "[parameters('myselfsqldb01vnet_connectionString')]"
+					},
+					"AzurePostgreSql794_properties_privateLinkResourceId": {
+						"value": "[parameters('AzurePostgreSql794_properties_privateLinkResourceId')]"
+					},
+					"AzurePostgreSql794_properties_groupId": {
+						"value": "[parameters('AzurePostgreSql794_properties_groupId')]"
+					},
+					"myblobvnet_properties_privateLinkResourceId": {
+						"value": "[parameters('myblobvnet_properties_privateLinkResourceId')]"
+					},
+					"myblobvnet_properties_groupId": {
+						"value": "[parameters('myblobvnet_properties_groupId')]"
 					},
 					"myselfsqld01_properties_privateLinkResourceId": {
 						"value": "[parameters('myselfsqld01_properties_privateLinkResourceId')]"
