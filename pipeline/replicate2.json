@@ -128,7 +128,8 @@
 					"dataset": {
 						"referenceName": "ubscore",
 						"type": "DatasetReference"
-					}
+					},
+					"firstRowOnly": false
 				}
 			},
 			{
@@ -258,7 +259,8 @@
 					"dataset": {
 						"referenceName": "ubscore",
 						"type": "DatasetReference"
-					}
+					},
+					"firstRowOnly": false
 				}
 			}
 		],
