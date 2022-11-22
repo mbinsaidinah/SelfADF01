@@ -1,0 +1,146 @@
+{
+	"name": "ubscore",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSynapseAnalytics1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "ACC_N",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 0
+			},
+			{
+				"name": "FOM_I",
+				"type": "decimal",
+				"precision": 9,
+				"scale": 0
+			},
+			{
+				"name": "FOM_VER_D",
+				"type": "datetime2",
+				"scale": 0
+			},
+			{
+				"name": "DOC_C",
+				"type": "varchar"
+			},
+			{
+				"name": "DOC_PSTED_M",
+				"type": "datetime2",
+				"scale": 6
+			},
+			{
+				"name": "DOC_SBST_C",
+				"type": "varchar"
+			},
+			{
+				"name": "ED_END_D",
+				"type": "datetime2",
+				"scale": 0
+			},
+			{
+				"name": "DOC_SGTR_D",
+				"type": "datetime2",
+				"scale": 0
+			},
+			{
+				"name": "DOC_LOC_TYP_C",
+				"type": "varchar"
+			},
+			{
+				"name": "DOC_LOC_V",
+				"type": "varchar"
+			},
+			{
+				"name": "DOC_LOC_D",
+				"type": "datetime2",
+				"scale": 0
+			},
+			{
+				"name": "DOC_NWS_I",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 0
+			},
+			{
+				"name": "DOC_RPAPR_D",
+				"type": "datetime2",
+				"scale": 0
+			},
+			{
+				"name": "ED_UPD_M",
+				"type": "datetime2",
+				"scale": 6
+			},
+			{
+				"name": "ED_USA_I",
+				"type": "varchar"
+			},
+			{
+				"name": "APPVL_D",
+				"type": "datetime2",
+				"scale": 0
+			},
+			{
+				"name": "DOC_STAT_C",
+				"type": "varchar"
+			},
+			{
+				"name": "TRTY_CNTRY_C",
+				"type": "varchar"
+			},
+			{
+				"name": "DOC_CNTNT_MGR_M",
+				"type": "datetime2",
+				"scale": 6
+			},
+			{
+				"name": "DOC_STRM_I",
+				"type": "decimal",
+				"precision": 15,
+				"scale": 0
+			},
+			{
+				"name": "DOC_PID_I",
+				"type": "varchar"
+			},
+			{
+				"name": "DOC_ESGTR_APPVL_F",
+				"type": "varchar"
+			},
+			{
+				"name": "DOC_SRCE_FROM_C",
+				"type": "varchar"
+			},
+			{
+				"name": "LCL_SCAN_F",
+				"type": "varchar"
+			},
+			{
+				"name": "DOC_UNIV_KEY_I",
+				"type": "decimal",
+				"precision": 15,
+				"scale": 0
+			},
+			{
+				"name": "DOC_PREV_LOC_V",
+				"type": "varchar"
+			},
+			{
+				"name": "DOC_MF_ACC_N",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "CORE_DWCSADM",
+			"table": "ACCT_DOC_FACT"
+		}
+	}
+}
