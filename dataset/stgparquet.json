@@ -1,0 +1,19 @@
+{
+	"name": "stgparquet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "adlstestfikri",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "ubsstg"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
