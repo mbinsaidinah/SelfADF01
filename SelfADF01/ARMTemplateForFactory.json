@@ -1123,7 +1123,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Copy data1",
+						"name": "csv to stg",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -1166,7 +1166,7 @@
 									"type": "LinkedServiceReference"
 								},
 								"path": "stg",
-								"enableCompression": true
+								"enableCompression": false
 							}
 						},
 						"inputs": [
@@ -1186,6 +1186,207 @@
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "pre check stg",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "csv to stg",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlDWSource",
+								"sqlReaderQuery": "select count(*) from [STG_LEGACY_DWCSADM].[ACCT_DOC_FACT]",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ubsSTG",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Pre check core",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "csv to stg",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlDWSource",
+								"sqlReaderQuery": "select count(*) from [CORE_DWCSADM].[ACCT_DOC_FACT]",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ubscore",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "stg to core",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "pre check stg",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Pre check core",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlDWSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "SqlDWSink",
+								"preCopyScript": "truncate table [CORE_DWCSADM].[ACCT_DOC_FACT]",
+								"allowPolyBase": true,
+								"polyBaseSettings": {
+									"rejectValue": 0,
+									"rejectType": "value",
+									"useTypeDefault": true
+								},
+								"disableMetricsCollection": false
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "adlstestfikri",
+									"type": "LinkedServiceReference"
+								},
+								"path": "stg",
+								"enableCompression": false
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ubsSTG",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ubscore",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "postcheck stg_copy1",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "stg to core",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlDWSource",
+								"sqlReaderQuery": "select count(*) from [STG_LEGACY_DWCSADM].[ACCT_DOC_FACT]",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ubsSTG",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "postcheck core_copy1",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "stg to core",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlDWSource",
+								"sqlReaderQuery": "select count(*) from [CORE_DWCSADM].[ACCT_DOC_FACT]",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ubscore",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
 					}
 				],
 				"policy": {
@@ -1200,6 +1401,7 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/UBSSource')]",
 				"[concat(variables('factoryId'), '/datasets/ubsSTG')]",
+				"[concat(variables('factoryId'), '/datasets/ubscore')]",
 				"[concat(variables('factoryId'), '/linkedServices/adlstestfikri')]"
 			]
 		},
@@ -2745,6 +2947,157 @@
 				],
 				"typeProperties": {
 					"schema": "STG_LEGACY_DWCSADM",
+					"table": "ACCT_DOC_FACT"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSynapseAnalytics1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ubscore')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSynapseAnalytics1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "ACC_N",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "FOM_I",
+						"type": "decimal",
+						"precision": 9,
+						"scale": 0
+					},
+					{
+						"name": "FOM_VER_D",
+						"type": "datetime2",
+						"scale": 0
+					},
+					{
+						"name": "DOC_C",
+						"type": "varchar"
+					},
+					{
+						"name": "DOC_PSTED_M",
+						"type": "datetime2",
+						"scale": 6
+					},
+					{
+						"name": "DOC_SBST_C",
+						"type": "varchar"
+					},
+					{
+						"name": "ED_END_D",
+						"type": "datetime2",
+						"scale": 0
+					},
+					{
+						"name": "DOC_SGTR_D",
+						"type": "datetime2",
+						"scale": 0
+					},
+					{
+						"name": "DOC_LOC_TYP_C",
+						"type": "varchar"
+					},
+					{
+						"name": "DOC_LOC_V",
+						"type": "varchar"
+					},
+					{
+						"name": "DOC_LOC_D",
+						"type": "datetime2",
+						"scale": 0
+					},
+					{
+						"name": "DOC_NWS_I",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "DOC_RPAPR_D",
+						"type": "datetime2",
+						"scale": 0
+					},
+					{
+						"name": "ED_UPD_M",
+						"type": "datetime2",
+						"scale": 6
+					},
+					{
+						"name": "ED_USA_I",
+						"type": "varchar"
+					},
+					{
+						"name": "APPVL_D",
+						"type": "datetime2",
+						"scale": 0
+					},
+					{
+						"name": "DOC_STAT_C",
+						"type": "varchar"
+					},
+					{
+						"name": "TRTY_CNTRY_C",
+						"type": "varchar"
+					},
+					{
+						"name": "DOC_CNTNT_MGR_M",
+						"type": "datetime2",
+						"scale": 6
+					},
+					{
+						"name": "DOC_STRM_I",
+						"type": "decimal",
+						"precision": 15,
+						"scale": 0
+					},
+					{
+						"name": "DOC_PID_I",
+						"type": "varchar"
+					},
+					{
+						"name": "DOC_ESGTR_APPVL_F",
+						"type": "varchar"
+					},
+					{
+						"name": "DOC_SRCE_FROM_C",
+						"type": "varchar"
+					},
+					{
+						"name": "LCL_SCAN_F",
+						"type": "varchar"
+					},
+					{
+						"name": "DOC_UNIV_KEY_I",
+						"type": "decimal",
+						"precision": 15,
+						"scale": 0
+					},
+					{
+						"name": "DOC_PREV_LOC_V",
+						"type": "varchar"
+					},
+					{
+						"name": "DOC_MF_ACC_N",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "CORE_DWCSADM",
 					"table": "ACCT_DOC_FACT"
 				}
 			},

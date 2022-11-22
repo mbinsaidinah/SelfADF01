@@ -211,12 +211,6 @@
 					},
 					"myblobvnet_properties_groupId": {
 						"value": "[parameters('myblobvnet_properties_groupId')]"
-					},
-					"myselfsqld01_properties_privateLinkResourceId": {
-						"value": "[parameters('myselfsqld01_properties_privateLinkResourceId')]"
-					},
-					"myselfsqld01_properties_groupId": {
-						"value": "[parameters('myselfsqld01_properties_groupId')]"
 					}
 				}
 			},
@@ -246,6 +240,12 @@
 					},
 					"myselfsqldb01vnet_connectionString": {
 						"value": "[parameters('myselfsqldb01vnet_connectionString')]"
+					},
+					"myselfsqld01_properties_privateLinkResourceId": {
+						"value": "[parameters('myselfsqld01_properties_privateLinkResourceId')]"
+					},
+					"myselfsqld01_properties_groupId": {
+						"value": "[parameters('myselfsqld01_properties_groupId')]"
 					}
 				}
 			},
